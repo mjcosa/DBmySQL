@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("./partials/head.ejs") %>
+<body>
+    
+    <%- include("./partials/nav.ejs") %>
+
+    <div class = "detailsContent">
+        <h2><%= title %></h2>
+
+            <div class = "blogs">
+                <p class="body"><%= patient.id %></p>
+                <p class="body"><%= patient.first_name %></p>
+                <p class="body"><%= patient.middle_name %></p>
+                <p class="body"><%= patient.last_name %></p>
+                <p class="body"><%= patient.contact_no %></p>
+            </div>
+            <a href="/patient/edit/<%= patient.id %>" class ="edit">edit</a>
+            <a class="delete" data-doc="<%= patient.id %>">delete</a>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+    <script>
+        const deleteDoc = document.querySelector('a.delete');
+
+        deleteDoc.addEventListener('click', (e) => {
+            const endpoint = `/patient/delete/${deleteDoc.dataset.doc}`;
+            
+            fetch(endpoint, {
+                method: 'DELETE'
+            })
+            .then((response) => response.json())
+            .then((data) => window.location.href = data.redirect)
+            .catch((err) => console.log(err));
+        })
+
+    </script>
+</body>
+</html>

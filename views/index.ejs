@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("./partials/head.ejs") %>
+<body>
+    
+    <%- include("./partials/nav.ejs") %>
+
+    <div class = "blogsContent">
+        <h2> All Patients</h2>
+
+        <% if (patient.length > 0) { %>
+            <% patient.forEach(patient => { %>
+              <a class="single" href="/patient/<%= patient.id %>">
+                <div class = "blogs">
+                  <h3 class="title"><%= patient.first_name %></h3>
+                  <p class="snippet"><%= patient.last_name %></p>
+                </div>
+              </a>
+            <% }) %>
+          <% } else { %>
+            <p>There are no patients to display...</p>
+          <% } %>
+    
+          
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+</body>
+</html>

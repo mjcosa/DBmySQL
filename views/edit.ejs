@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head.ejs") %>
+</head>
+<body>
+    
+    <%- include("./partials/nav.ejs") %>
+
+    <div class="create-blog">
+          <h1>Edit Blog</h1>
+        <form action="/patient/edit/<%= patient.id %>" method="POST">
+          <label for="title">First Name:</label>
+          <input type="text" value="<%= patient.first_name %>" id="title" name="first_name" required>
+          <label for="snippet">Middle Name:</label>
+          <input type="text" value="<%= patient.middle_name %>" id="snippet" name="middle_name" required>
+          <label for="snippet">Last Name:</label>
+          <input type="text" value="<%= patient.last_name %>" id="snippet" name="last_name" required>
+          <label for="snippet">Contact No:</label>
+          <input type="text" value="<%= patient.contact_no %>" id="snippet" name="contact_no" required>
+          <button>Save Changes</button>
+        </form>
+      </div>
+
+      <%- include("./partials/footer.ejs") %>
+</body>
+</html>
