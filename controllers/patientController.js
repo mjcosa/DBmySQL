@@ -1,4 +1,4 @@
-import { db } from "../server.js";
+import { db } from "../models/database.js";
 
 export const getPatients = async () => {
 
