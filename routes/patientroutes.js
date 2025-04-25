@@ -14,7 +14,7 @@ router.get('/', getPatient);
 
 router.get('/add', addPatientPage);
 
-router.post('/', addPatient);
+router.post('/add', addPatient);
 
 router.get('/:id', getPatientDetails);
 

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("./partials/head.ejs") %>
+<body>
+    
+    <%- include("./partials/nav.ejs") %>
+
+    <div class = "blogsContent">
+        <h1> <%= title %> </h1>
+
+        <% if (appointment.length > 0) { %>
+            <% appointment.forEach(appointment => { %>
+                <div class = "blogs">
+                  <a class="single" href="/schedule/view/<%= appointment.appointment_no %>">
+                    <h3 class="title">Appointment No. <%= appointment.appointment_no %></h3>
+                    <p class="concern"><strong>Concern: </strong> <%= appointment.concern %></p>
+                    <p class="patient"><strong>Patient ID: </strong> <%= appointment.patient_id %></p>
+                    <p class="patient"><strong>Appointment Date: </strong> <%= appointment.appointment_date %></p>
+                  </a>
+                </div>
+            <% }) %>
+          <% } else { %>
+            <p>There are no appointments to display...</p>
+          <% } %>
+    
+          
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+</body>
+</html>

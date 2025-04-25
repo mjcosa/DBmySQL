@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("./partials/head.ejs") %>
+<body>
+    
+    <%- include("./partials/nav.ejs") %>
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <h3>Are you sure you want to delete this appointment?</h3>
+            <button class="cancel" onclick="closeModal()">Cancel</button>
+            <button class="confirm" onclick="deletePost()">Confirm</button>
+        </div>
+    </div>
+
+    <div class = "detailsContent">
+        <h1> <%= title %> </h1>
+        <div class="appointmentDets">
+            <div class = "apt">
+                <h2 class="body">Appointment No. <%= appointment.appointment_no %></h2>
+                <p class="body"><strong>Patient ID: </strong><%= appointment.patient_id %></p>
+                <p class="body"><strong>Concern: </strong><%= appointment.concern %></p>
+                <p class="body"><strong>Amount Due: </strong><%= appointment.amount_due %></p>
+                <p class="body"><strong>Contact No. </strong><%= appointment.contact_no %></p>
+                <p class="body"><strong>Lab Results ID: </strong><%= appointment.labresults_id %></p>
+                <p class="body"><strong>Assigned Midwife ID: </strong><%= appointment.midwife_id %></p>
+                <p class="body"><strong>Schedule: </strong><%= appointment.appointment_date %></p>
+                <a href="/schedule/edit/<%= appointment.appointment_no %>" class ="edit">edit</a>
+                <a class="delete" data-doc="<%= appointment.appointment_no %>">delete</a>
+            </div>
+        </div>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+    <script>
+
+        const deleteDoc = document.querySelector('a.delete');
+        const modal = document.getElementById('deleteModal');
+        const confirmDeleteBtn = modal.querySelector('.confirm');
+        const cancelDeleteBtn = modal.querySelector('.cancel');
+
+        deleteDoc.addEventListener('click', (res) => {
+            res.preventDefault();
+            modal.style.display = 'flex';
+            const postId = deleteDoc.dataset.doc;
+            console.log(postId);
+            confirmDeleteBtn.addEventListener('click', () => {
+                deletePost(postId);
+            });
+        });
+
+        cancelDeleteBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        function deletePost(postId) {
+            fetch(`/schedule/delete/${postId}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then((data) => window.location.href = data.redirect)
+            .catch(err => {
+                res.status(500).res.redirect('/');
+                console.error(err);
+            });
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

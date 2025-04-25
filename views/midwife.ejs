@@ -6,7 +6,7 @@
     <%- include("./partials/nav.ejs") %>
     <div class="modal" id="deleteModal">
         <div class="modal-content">
-            <h3>Are you sure you want to delete this Patient?</h3>
+            <h3>Are you sure you want to delete this midwife?</h3>
             <button class="cancel" onclick="closeModal()">Cancel</button>
             <button class="confirm" onclick="deletePost()">Confirm</button>
         </div>
@@ -16,14 +16,14 @@
         <h1> <%= title %> </h1>
         <div class="about">
             <div class = "blogs">
-                <h1 class="body">Patient ID: <%= patient.id %></h1>
-                <p class="body"><strong>First Name:</strong> <%= patient.first_name %></p>
-                <p class="body"><strong>Middle Name:</strong> <%= patient.middle_name %></p>
-                <p class="body"><strong>Last Name:</strong> <%= patient.last_name %></p>
-                <p class="body"><strong>Contact Info:</strong> <%= patient.contact_no %></p>
+                <h1 class="body">Midwife ID: <%= midwife.id %></h1>
+                <p class="body"><strong>First Name:</strong> <%= midwife.first_name %></p>
+                <p class="body"><strong>Middle Name:</strong> <%= midwife.middle_name %></p>
+                <p class="body"><strong>Last Name:</strong> <%= midwife.last_name %></p>
+                <p class="body"><strong>Contact Info:</strong> <%= midwife.contact_no %></p>
                 <br>
-                <a href="/patient/edit/<%= patient.id %>" class ="edit">edit</a>
-                <a class="delete" data-doc="<%= patient.id %>">delete</a>
+                <a href="/midwife/edit/<%= midwife.id %>" class ="edit">edit</a>
+                <a class="delete" data-doc="<%= midwife.id %>">delete</a>
             </div>
         </div>
     </div>
@@ -52,7 +52,7 @@
     });
   
     function deletePost(postId) {
-        fetch(`/patient/delete/${postId}`, {
+        fetch(`/midwife/delete/${postId}`, {
             method: 'DELETE',
         })
         .then(response => response.json())

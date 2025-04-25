@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head.ejs") %>
+</head>
+<body>
+    
+    <%- include("./partials/nav.ejs") %>
+
+    <div class="create-blog">
+        <h1>Schedule an Appointment</h1>
+        <form action="/schedule" method="POST">
+            <label for="concern">Concern:</label>
+            <input type="text" id="concern" name="concern" placeholder="e.g., Fever, Check-up" required>
+
+            <label for="appointment_date">Appointment Date:</label>
+            <input type="date" id="appointment_date" name="appointment_date" required>
+
+            <label for="contact_no">Contact No:</label>
+            <input type="text" id="contact_no" name="contact_no" placeholder="e.g., 09123456789" required>
+
+            <label for="patient_id">Patient ID:</label>
+            <input type="text" id="patient" name="patient_id" placeholder="Patient ID" required>
+
+            <label for="labResults">Lab Results ID:</label>
+            <input type="text" id="labResults" name="labresults_id" placeholder="Lab Results ID (optional)">
+
+            <label for="midwife_id">MIDWIFE ID:</label>
+            <input type="text" id="midwife" name="midwife_id" placeholder="Midwife ID" required>
+
+            <button>Schedule</button>
+        </form>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+</body>
+</html>

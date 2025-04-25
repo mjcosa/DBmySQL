@@ -6,16 +6,17 @@
     <%- include("./partials/nav.ejs") %>
 
     <div class = "blogsContent">
-        <h2> All Patients</h2>
+        <h1> <%= title %></h1>
 
         <% if (patient.length > 0) { %>
             <% patient.forEach(patient => { %>
-              <a class="single" href="/patient/<%= patient.id %>">
-                <div class = "blogs">
-                  <h3 class="title"><%= patient.first_name %></h3>
-                  <p class="snippet"><%= patient.last_name %></p>
-                </div>
-              </a>
+              <div class = "blogs">
+                <a class="single" href="/patient/<%= patient.id %>">
+                    <h2 class="title"><%= patient.last_name %></h2>
+                    <p class="snippet"><%= patient.first_name %> <%= patient.middle_name %></p>
+                    <p class="contact"><%= patient.contact_no %></p>
+                </a>
+              </div>
             <% }) %>
           <% } else { %>
             <p>There are no patients to display...</p>

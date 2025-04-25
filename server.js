@@ -1,6 +1,10 @@
 import express from "express";
 import morgan from "morgan";
 import {router} from "./routes/patientroutes.js";
+import { appointmentRouter } from "./routes/appointmentroutes.js";
+import { midwifeRouter } from "./routes/midwiferoutes.js";
+import methodOverride from "method-override";
+
 
 const PORT = process.env.PORT || 3000;
 
@@ -13,22 +17,33 @@ app.listen(PORT, () => {
 app.use(morgan('dev'));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(methodOverride('_method'));
 
 app.set("view engine", "ejs");
 // app.set("views", "./views")
 
-//Index
+//Index / All Patients Page
 app.get('/', (req, res) => {
     res.redirect('/patient');
 });
   
-  //About page
-app.get('/about', (req, res) => {
-    res.render('about', {title: 'About'})
+  //Add patient page
+app.get('/add_patient', (req, res) => {
+    res.render('add', {title: 'Add Patient'})
 });
-  
+
+// Add schedule page
+app.get('/schedule', (req, res) => {
+  res.render('schedule', {title: 'Schedule Appointment'})
+});
+
   //Blog Routes
 app.use('/patient', router);
+
+app.use("/schedule", appointmentRouter);
+
+app.use("/midwife", midwifeRouter);
   
   // 404 page
 app.use((req, res) => {
