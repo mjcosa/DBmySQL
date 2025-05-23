@@ -12,7 +12,7 @@
 
     <!-- Search Bar -->
     <form class="search-form">
-      <input type="text" name="query" placeholder="Search for patients..." class="search-input">
+      <input type="text" name="query" id="patientSearch" placeholder="Search for patients..." class="search-input" autocomplete="off">
     </form>
 
     <!-- Summary -->
@@ -62,6 +62,33 @@
           const id = row.getAttribute('data-id');
           window.location.href = `/patient/${id}`;
         });
+      });
+    });
+
+    // Live search and highlight
+    const searchInput = document.getElementById('patientSearch');
+    const tableRows = document.querySelectorAll('.patients-table tbody tr');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+
+      tableRows.forEach(row => {
+        let matchFound = false;
+        row.querySelectorAll('td').forEach(cell => {
+          const text = cell.textContent;
+          const lowerText = text.toLowerCase();
+
+          // Remove previous highlights
+          cell.innerHTML = text;
+
+          if (query && lowerText.includes(query)) {
+            matchFound = true;
+            const regex = new RegExp(`(${query})`, 'gi');
+            cell.innerHTML = text.replace(regex, '<span class="highlight">$1</span>');
+          }
+        });
+
+        row.style.display = matchFound || query === '' ? '' : 'none';
       });
     });
   </script>
