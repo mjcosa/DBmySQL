@@ -12,19 +12,31 @@ import {
     getPatientbyID,
     deletePatient,
     updatePatient,
+    searchPatientsByName,
 } from "../controllers/patientController.js";
 
-export async function getPatient(req, res){
-    try {
-        const patient = await getPatients();
+export async function getPatient(req, res) {
+  try {
+    const patients = await getPatients();
 
-        return res.render('../views/index', {title: 'All Patients', patient})
+    // Calculate total pages if you have pagination logic (or hardcode to 1 for now)
+    const totalPages = 1;  // Replace with actual calculation if needed
 
-    } catch (err) {
-        console.error(err);
-        return res.status(500);
-    }
+    const view = req.query.view === 'table' ? 'table' : 'cards';
+
+    return res.render('../views/index', {
+      title: 'All Patients',
+      patient: patients,
+      view,
+      totalPages
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500);
+  }
 }
+
+
 
 export async function addPatientPage(req, res){
     try {
@@ -109,10 +121,30 @@ export async function updatePatientDetails(req, res){
     }
 }
 
+export async function searchPatients(req, res) {
+  try {
+    const query = req.query.query || '';
+    const patients = await searchPatientsByName(query);
+
+    return res.render('../views/index', {
+      title: `Search Results for "${query}"`,
+      patient: patients,
+      view: req.query.view === 'table' ? 'table' : 'cards',
+      totalPages: 1,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('Server Error');
+  }
+}
+
 export async function getMidWife(req, res){
     try {
-        const patient = await getMidwives();
-        return res.render('../views/index', {title: 'All Midwives', patient})
+        const midwife = await getMidwives();
+
+        const totalPages = 1;  // Replace with actual calculation if needed
+
+        return res.render('../views/midwife', {title: 'All Midwives', midwife, totalPages})
 
     } catch (err) {
         console.error(err);
@@ -149,7 +181,7 @@ export async function getMidwifeDetails(req, res){
     try {
         const midwife = await getMidwifeById(req.params.id);
         if (midwife) {
-            return res.render(`../views/details`, {title: "Midwife Info", midwife});
+            return res.render(`../views/midwifeDetails`, {title: "Midwife Info", midwife});
         }
     } catch (err) {
         console.error(err);
@@ -175,9 +207,9 @@ export async function deleteMidwife(req, res){
 
 export async function redirectEditMidwifePage(req, res){
     try {
-        const patient = await getMidwifeById(req.params.id)
-        console.log(patient);
-        return res.render(`../views/edit`, {title: "Midwife Info", patient});
+        const midwife = await getMidwifeById(req.params.id)
+        console.log(midwife);
+        return res.render(`../views/edit`, {title: "Midwife Info", midwife});
     } catch (err) {
         console.error(err);
         return res.status(500);
@@ -186,16 +218,16 @@ export async function redirectEditMidwifePage(req, res){
 
 export async function updateMidwife(req, res){
     try {
-        let patient = await getMidwifeById(req.params.id);
-        patient = {
+        let midwife = await getMidwifeById(req.params.id);
+        midwife = {
             first_name: req.body.first_name,
             middle_name: req.body.middle_name,
             last_name: req.body.last_name,
             contact_no: req.body.contact_no,
             availability: req.body.availability,
         }
-        const updatedPatient = await updateMidwifedetails(patient);
-        console.log(updatedPatient);
+        const updatedMidwife = await updateMidwifedetails(midwife);
+        console.log(updatedMidwife);
         return res.redirect(`/midwife/${req.params.id}`);
     } catch (err) {
         console.error(err);

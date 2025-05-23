@@ -7,7 +7,8 @@ import {
     getPatientDetails,
     deletePatientDetails,
     redirectEditPage,
-    updatePatientDetails
+    updatePatientDetails,
+    searchPatients
 } from "./routes.js";
 
 router.get('/', getPatient);
@@ -23,3 +24,5 @@ router.delete('/delete/:id', deletePatientDetails);
 router.get('/edit/:id', redirectEditPage);
 
 router.post('/edit/:id', updatePatientDetails);
+
+router.get('/search', searchPatients);
