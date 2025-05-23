@@ -10,17 +10,29 @@
   <div class="blogsContent">
     <h1><%= title %></h1>
 
-    <!-- Optional Search Bar -->
-    <form action="/schedule/search" method="GET" class="search-form">
-      <input type="text" name="query" placeholder="Search appointments..." class="search-input">
-      <button type="submit" class="search-button">Search</button>
+    <!-- Search Bar -->
+    <form class="search-form">
+      <input type="text" name="query" id="appointmentSearch" placeholder="Search for appointments..." class="search-input" autocomplete="off">
     </form>
 
-    <!-- Summary -->
-    <div class="summary">
-      <h3>Total Appointments: <%= appointment.length %></h3>
-    </div>
+    <!-- Filters -->
+    <form action="/schedule/view" method="GET" class="filter-form">
+      <div class="filter-group">
+        <label for="start_date">Start Date:</label>
+        <input type="date" name="start_date" id="start_date" value="<%= filters?.start_date || '' %>">
+      </div>
 
+      <div class="filter-group">
+        <label for="end_date">End Date:</label>
+        <input type="date" name="end_date" id="end_date" value="<%= filters?.end_date || '' %>">
+      </div>
+
+      <button type="submit" class="search-button">Apply Filters</button>
+      <a href="/schedule/view" class="clear-button">Clear Filters</a>
+    </form>
+
+
+    <!-- Appointment Table -->
     <% if (appointment.length > 0) { %>
       <table class="patients-table" id="appointmentTable">
         <thead>
@@ -34,7 +46,7 @@
         <tbody>
           <% appointment.forEach(item => { %>
             <tr class="clickable-row" data-id="<%= item.appointment_no %>">
-              <td><%= item.appointment_no %></td>
+              <td><a href="/schedule/view/<%= item.appointment_no %>"><%= item.appointment_no %></a></td>
               <td><%= item.concern %></td>
               <td><%= item.patient_id %></td>
               <td><%= item.appointment_date %></td>
@@ -105,6 +117,33 @@
           const id = row.getAttribute('data-id');
           window.location.href = `/schedule/view/${id}`;
         });
+      });
+    });
+
+    // Live search and highlight
+    const searchInput = document.getElementById('appointmentSearch');
+    const tableRows = document.querySelectorAll('.patients-table tbody tr');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+
+      tableRows.forEach(row => {
+        let matchFound = false;
+        row.querySelectorAll('td').forEach(cell => {
+          const text = cell.textContent;
+          const lowerText = text.toLowerCase();
+
+          // Remove previous highlights
+          cell.innerHTML = text;
+
+          if (query && lowerText.includes(query)) {
+            matchFound = true;
+            const regex = new RegExp(`(${query})`, 'gi');
+            cell.innerHTML = text.replace(regex, '<span class="highlight">$1</span>');
+          }
+        });
+
+        row.style.display = matchFound || query === '' ? '' : 'none';
       });
     });
   </script>

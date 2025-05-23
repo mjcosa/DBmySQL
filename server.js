@@ -27,7 +27,7 @@ app.set("view engine", "ejs");
 app.get('/', (req, res) => {
     res.redirect('/patient');
 });
-  
+
   //Add patient page
 app.get('/add_patient', (req, res) => {
     res.render('add', {title: 'Add Patient'})

@@ -10,13 +10,10 @@
   <div class="blogsContent">
     <h1><%= title %></h1>
 
-    <!-- Search Bar (optional) -->
-    <!--
-    <form action="/midwife/search" method="GET" class="search-form">
-      <input type="text" name="query" placeholder="Search midwife..." class="search-input">
-      <button type="submit" class="search-button">Search</button>
+    <!-- Search Bar -->
+    <form class="search-form">
+      <input type="text" name="query" id="midwifeSearch" placeholder="Search for midwives..." class="search-input" autocomplete="off">
     </form>
-    -->
 
     <!-- Summary -->
     <div class="summary">
@@ -31,7 +28,6 @@
           <th>First & Middle Name</th>
           <th>Contact No</th>
           <th>Availability</th>
-          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -41,10 +37,6 @@
             <td><%= midwife.first_name %> <%= midwife.middle_name %></td>
             <td><%= midwife.contact_no %></td>
             <td><%= midwife.availability || 'Unknown' %></td>
-            <td>
-              <a class="edit" href="/midwife/edit/<%= midwife.id %>" onclick="event.stopPropagation()">Edit</a>
-              <a class="delete" href="/midwife/delete/<%= midwife.id %>" onclick="event.stopPropagation()">Delete</a>
-            </td>
           </tr>
         <% }) %>
       </tbody>
@@ -69,6 +61,33 @@
           const id = row.getAttribute('data-id');
           window.location.href = `/midwife/${id}`;
         });
+      });
+    });
+
+    // Live search and highlight
+    const searchInput = document.getElementById('midwifeSearch');
+    const tableRows = document.querySelectorAll('.patients-table tbody tr');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+
+      tableRows.forEach(row => {
+        let matchFound = false;
+        row.querySelectorAll('td').forEach(cell => {
+          const text = cell.textContent;
+          const lowerText = text.toLowerCase();
+
+          // Remove previous highlights
+          cell.innerHTML = text;
+
+          if (query && lowerText.includes(query)) {
+            matchFound = true;
+            const regex = new RegExp(`(${query})`, 'gi');
+            cell.innerHTML = text.replace(regex, '<span class="highlight">$1</span>');
+          }
+        });
+
+        row.style.display = matchFound || query === '' ? '' : 'none';
       });
     });
   </script>

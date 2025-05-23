@@ -11,9 +11,8 @@
     <h1><%= title %></h1>
 
     <!-- Search Bar -->
-    <form action="/patient/search" method="GET" class="search-form">
-      <input type="text" name="query" placeholder="Search patient..." class="search-input">
-      <button type="submit" class="search-button">Search</button>
+    <form class="search-form">
+      <input type="text" name="query" placeholder="Search for patients..." class="search-input">
     </form>
 
     <!-- Summary -->
@@ -29,7 +28,6 @@
           <th>First & Middle Name</th>
           <th>Contact No</th>
           <th>Next Appointment</th>
-          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -39,10 +37,6 @@
             <td><%= patient.first_name %> <%= patient.middle_name %></td>
             <td><%= patient.contact_no %></td>
             <td><%= patient.next_appointment || 'None' %></td>
-            <td>
-              <a class="edit" href="/patient/<%= patient.id %>/edit" onclick="event.stopPropagation()">Edit</a>
-              <a class="delete" href="/patient/<%= patient.id %>/delete" onclick="event.stopPropagation()">Delete</a>
-            </td>
           </tr>
         <% }) %>
       </tbody>

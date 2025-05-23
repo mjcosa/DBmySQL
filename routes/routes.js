@@ -12,8 +12,8 @@ import {
     getPatientbyID,
     deletePatient,
     updatePatient,
-    searchPatientsByName,
 } from "../controllers/patientController.js";
+
 
 export async function getPatient(req, res) {
   try {
@@ -121,23 +121,6 @@ export async function updatePatientDetails(req, res){
     }
 }
 
-export async function searchPatients(req, res) {
-  try {
-    const query = req.query.query || '';
-    const patients = await searchPatientsByName(query);
-
-    return res.render('../views/index', {
-      title: `Search Results for "${query}"`,
-      patient: patients,
-      view: req.query.view === 'table' ? 'table' : 'cards',
-      totalPages: 1,
-    });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send('Server Error');
-  }
-}
-
 export async function getMidWife(req, res){
     try {
         const midwife = await getMidwives();
@@ -154,7 +137,7 @@ export async function getMidWife(req, res){
 
 export async function addMidwifePage(req, res){
     try {
-        return res.render('../views/add', {title: 'Add Midwife'});
+        return res.render('../views/midwifeAdd', {title: 'Add Midwife'});
     } catch (err) {
         console.error(err);
         return res.status(500);
