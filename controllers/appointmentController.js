@@ -27,15 +27,35 @@ export const submitAppointment = async (req, res) => {
 };
 
 export const displayAppointments = async (req, res) => {
-    try {
-        const [rows] = await db.execute(`SELECT * FROM appointment`);
-        console.log(rows);
-        return res.render("../views/appointments", { title: "Appointments", appointment: rows }); // or redirect to a confirmation page
-    } catch (error) {
-        console.error("Error inserting appointment:", error);
-        res.status(500).send("Error scheduling appointment.");
+  const { start_date, end_date, concern } = req.query;
+
+  try {
+    let query = `SELECT * FROM appointment WHERE 1=1`;
+    const params = [];
+
+    if (start_date) {
+      query += ` AND appointment_date >= ?`;
+      params.push(start_date);
     }
-}
+
+    if (end_date) {
+      query += ` AND appointment_date <= ?`;
+      params.push(end_date);
+    }
+
+    const [rows] = await db.execute(query, params);
+
+    return res.render("../views/appointments", {
+      title: "Appointments",
+      appointment: rows,
+      filters: { start_date, end_date, concern }, // optional: pass current filters to pre-fill form
+    });
+  } catch (error) {
+    console.error("Error retrieving appointments:", error);
+    res.status(500).send("Error retrieving appointments.");
+  }
+};
+
 
 export const displayAppointmentById = async (req, res) => {
     try {
@@ -99,3 +119,4 @@ export async function deleteAppointment(req, res){
         return res.status(500);
     }
 }
+

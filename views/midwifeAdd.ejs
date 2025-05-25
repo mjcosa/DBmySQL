@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head.ejs") %>
+</head>
+<body>
+
+    <%- include("./partials/nav.ejs") %>
+
+    <div class="create-blog">
+        <h1>Add a Midwife</h1>
+        <form action="/midwife/add" method="POST">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Jane" required>
+
+            <label for="middleName">Middle Name:</label>
+            <input type="text" id="middleName" name="middleName" placeholder="Ann" required>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+
+            <label for="contact">Contact No:</label>
+            <input type="text" id="contact" name="contact" placeholder="09123456789" required>
+
+            <label for="availability">Availability:</label>
+            <input type="text" id="availability" name="availability" placeholder="MWF 8AM-5PM" required>
+
+            <button>Submit</button>
+        </form>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+</body>
+</html>

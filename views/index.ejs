@@ -1,30 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include("./partials/head.ejs") %>
+  <%- include("./partials/head.ejs") %>
+  <head>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
 <body>
-    
-    <%- include("./partials/nav.ejs") %>
+  <%- include("./partials/nav.ejs") %>
 
-    <div class = "blogsContent">
-        <h1> <%= title %></h1>
+  <div class="blogsContent">
+    <h1><%= title %></h1>
 
-        <% if (patient.length > 0) { %>
-            <% patient.forEach(patient => { %>
-              <div class = "blogs">
-                <a class="single" href="/patient/<%= patient.id %>">
-                    <h2 class="title"><%= patient.last_name %></h2>
-                    <p class="snippet"><%= patient.first_name %> <%= patient.middle_name %></p>
-                    <p class="contact"><%= patient.contact_no %></p>
-                </a>
-              </div>
-            <% }) %>
-          <% } else { %>
-            <p>There are no patients to display...</p>
-          <% } %>
-    
-          
+    <!-- Search Bar -->
+    <form class="search-form">
+      <input type="text" name="query" id="patientSearch" placeholder="Search for patients..." class="search-input" autocomplete="off">
+    </form>
+
+    <!-- Summary -->
+    <div class="summary">
+      <h3>Total Patients: <%= patient.length %></h3>
     </div>
 
-    <%- include("./partials/footer.ejs") %>
+    <!-- Table Layout Only -->
+    <table class="patients-table">
+      <thead>
+        <tr>
+          <th>Last Name</th>
+          <th>First & Middle Name</th>
+          <th>Contact No</th>
+          <th>Next Appointment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% patient.forEach(patient => { %>
+          <tr class="clickable-row" data-id="<%= patient.id %>">
+            <td><%= patient.last_name %></td>
+            <td><%= patient.first_name %> <%= patient.middle_name %></td>
+            <td><%= patient.contact_no %></td>
+            <td><%= patient.next_appointment || 'None' %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <!-- Pagination (if used) -->
+    <% if (totalPages && totalPages > 1) { %>
+      <div class="pagination">
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+
+  <%- include("./partials/footer.ejs") %>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const rows = document.querySelectorAll('.clickable-row');
+      rows.forEach(row => {
+        row.addEventListener('click', () => {
+          const id = row.getAttribute('data-id');
+          window.location.href = `/patient/${id}`;
+        });
+      });
+    });
+
+    // Live search and highlight
+    const searchInput = document.getElementById('patientSearch');
+    const tableRows = document.querySelectorAll('.patients-table tbody tr');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+
+      tableRows.forEach(row => {
+        let matchFound = false;
+        row.querySelectorAll('td').forEach(cell => {
+          const text = cell.textContent;
+          const lowerText = text.toLowerCase();
+
+          // Remove previous highlights
+          cell.innerHTML = text;
+
+          if (query && lowerText.includes(query)) {
+            matchFound = true;
+            const regex = new RegExp(`(${query})`, 'gi');
+            cell.innerHTML = text.replace(regex, '<span class="highlight">$1</span>');
+          }
+        });
+
+        row.style.display = matchFound || query === '' ? '' : 'none';
+      });
+    });
+  </script>
+
 </body>
 </html>

@@ -1,31 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include("./partials/head.ejs") %>
+  <%- include("./partials/head.ejs") %>
+  <head>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
 <body>
-    
-    <%- include("./partials/nav.ejs") %>
+  <%- include("./partials/nav.ejs") %>
 
-    <div class = "blogsContent">
-        <h1> <%= title %> </h1>
+  <div class="blogsContent">
+    <h1><%= title %></h1>
 
-        <% if (appointment.length > 0) { %>
-            <% appointment.forEach(appointment => { %>
-                <div class = "blogs">
-                  <a class="single" href="/schedule/view/<%= appointment.appointment_no %>">
-                    <h3 class="title">Appointment No. <%= appointment.appointment_no %></h3>
-                    <p class="concern"><strong>Concern: </strong> <%= appointment.concern %></p>
-                    <p class="patient"><strong>Patient ID: </strong> <%= appointment.patient_id %></p>
-                    <p class="patient"><strong>Appointment Date: </strong> <%= appointment.appointment_date %></p>
-                  </a>
-                </div>
-            <% }) %>
-          <% } else { %>
-            <p>There are no appointments to display...</p>
-          <% } %>
-    
-          
-    </div>
+    <!-- Search Bar -->
+    <form class="search-form">
+      <input type="text" name="query" id="appointmentSearch" placeholder="Search for appointments..." class="search-input" autocomplete="off">
+    </form>
 
-    <%- include("./partials/footer.ejs") %>
+    <!-- Filters -->
+    <form action="/schedule/view" method="GET" class="filter-form">
+      <div class="filter-group">
+        <label for="start_date">Start Date:</label>
+        <input type="date" name="start_date" id="start_date" value="<%= filters?.start_date || '' %>">
+      </div>
+
+      <div class="filter-group">
+        <label for="end_date">End Date:</label>
+        <input type="date" name="end_date" id="end_date" value="<%= filters?.end_date || '' %>">
+      </div>
+
+      <button type="submit" class="search-button">Apply Filters</button>
+      <a href="/schedule/view" class="clear-button">Clear Filters</a>
+    </form>
+
+
+    <!-- Appointment Table -->
+    <% if (appointment.length > 0) { %>
+      <table class="patients-table" id="appointmentTable">
+        <thead>
+          <tr>
+            <th data-column="appointment_no" data-order="desc">Appointment No. <span class="sort-arrow">&#9660;</span></th>
+            <th data-column="concern" data-order="desc">Concern <span class="sort-arrow">&#9660;</span></th>
+            <th data-column="patient_id" data-order="desc">Patient ID <span class="sort-arrow">&#9660;</span></th>
+            <th data-column="appointment_date" data-order="desc">Appointment Date <span class="sort-arrow">&#9660;</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% appointment.forEach(item => { %>
+            <tr class="clickable-row" data-id="<%= item.appointment_no %>">
+              <td><a href="/schedule/view/<%= item.appointment_no %>"><%= item.appointment_no %></a></td>
+              <td><%= item.concern %></td>
+              <td><%= item.patient_id %></td>
+              <td><%= item.appointment_date %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <p>There are no appointments to display...</p>
+    <% } %>
+  </div>
+
+  <%- include("./partials/footer.ejs") %>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const table = document.getElementById('appointmentTable');
+      if (!table) return;
+      const headers = table.querySelectorAll('th');
+      const tbody = table.querySelector('tbody');
+
+      headers.forEach(header => {
+        header.addEventListener('click', () => {
+          const column = header.getAttribute('data-column');
+          const currentOrder = header.getAttribute('data-order');
+          const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+
+          headers.forEach(h => {
+            h.setAttribute('data-order', 'desc');
+            const span = h.querySelector('.sort-arrow');
+            if (span) span.innerHTML = '▼';
+          });
+
+          header.setAttribute('data-order', newOrder);
+          const arrow = newOrder === 'asc' ? '▲' : '▼';
+          const span = header.querySelector('.sort-arrow');
+          if (span) span.innerHTML = arrow;
+
+          const rows = Array.from(tbody.querySelectorAll('tr'));
+
+          rows.sort((a, b) => {
+            let aText = a.querySelector(`td:nth-child(${Array.from(headers).indexOf(header) + 1})`).textContent.trim();
+            let bText = b.querySelector(`td:nth-child(${Array.from(headers).indexOf(header) + 1})`).textContent.trim();
+
+            const aNumber = parseFloat(aText);
+            const bNumber = parseFloat(bText);
+            const aDate = Date.parse(aText);
+            const bDate = Date.parse(bText);
+
+            if (!isNaN(aNumber) && !isNaN(bNumber)) {
+              aText = aNumber;
+              bText = bNumber;
+            } else if (!isNaN(aDate) && !isNaN(bDate)) {
+              aText = aDate;
+              bText = bDate;
+            }
+
+            return (aText < bText ? -1 : aText > bText ? 1 : 0) * (newOrder === 'asc' ? 1 : -1);
+          });
+
+          rows.forEach(row => tbody.appendChild(row));
+        });
+      });
+
+      const rows = document.querySelectorAll('.clickable-row');
+      rows.forEach(row => {
+        row.addEventListener('click', () => {
+          const id = row.getAttribute('data-id');
+          window.location.href = `/schedule/view/${id}`;
+        });
+      });
+    });
+
+    // Live search and highlight
+    const searchInput = document.getElementById('appointmentSearch');
+    const tableRows = document.querySelectorAll('.patients-table tbody tr');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+
+      tableRows.forEach(row => {
+        let matchFound = false;
+        row.querySelectorAll('td').forEach(cell => {
+          const text = cell.textContent;
+          const lowerText = text.toLowerCase();
+
+          // Remove previous highlights
+          cell.innerHTML = text;
+
+          if (query && lowerText.includes(query)) {
+            matchFound = true;
+            const regex = new RegExp(`(${query})`, 'gi');
+            cell.innerHTML = text.replace(regex, '<span class="highlight">$1</span>');
+          }
+        });
+
+        row.style.display = matchFound || query === '' ? '' : 'none';
+      });
+    });
+  </script>
 </body>
 </html>

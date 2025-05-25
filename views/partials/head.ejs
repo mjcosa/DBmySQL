@@ -310,5 +310,265 @@
         box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
     }
 
+    /* Search Form */
+.search-form {
+  margin-bottom: 30px;
+}
+
+.search-input {
+  padding: 10px;
+  width: 300px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-button {
+  padding: 10px;
+  background-color: #7d6e6e;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.search-button:hover {
+  background-color: #6b5b5b;
+}
+
+/* Summary */
+.summary {
+  margin-bottom: 20px;
+}
+
+/* Patients Table */
+.patients-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  font-family: 'Noto Serif', serif;
+  font-size: 16px;
+  background-color: #f4f4f4;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.patients-table thead tr {
+  background-color: #ccc;
+  color: #222;
+  text-align: left;
+  border-bottom: 3px solid #a08b8b;
+}
+
+.patients-table thead th {
+  position: relative;
+  padding-right: 25px; /* Space for the arrow on the right */
+}
+
+.patients-table thead th .sort-arrow {
+  position: absolute;
+  right: 10px;  /* distance from right edge */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8em;
+  pointer-events: none; /* arrow does not interfere with clicks */
+  user-select: none;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.patients-table thead th:hover .sort-arrow {
+  color: black;
+}
+
+.patients-table thead th:hover {
+  background-color: #a08b8b;  /* A warm, muted brown */
+  color: white;               /* Contrast text color */
+  cursor: pointer;            /* Show pointer on hover */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.patients-table th,
+.patients-table td {
+  padding: 10px;
+}
+
+.patients-table tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.patients-table tbody tr:hover {
+  background-color: #eceaea;
+}
+
+/* Action buttons */
+.edit,
+.delete {
+  text-decoration: none;
+  padding: 5px 15px;
+  border-radius: 5px;
+  font-weight: 600;
+  margin-right: 5px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.edit {
+  background-color: #7d6e6e;
+}
+
+.edit:hover {
+  background-color: #6b5b5b;
+}
+
+.delete {
+  background-color: #b75656;
+}
+
+.delete:hover {
+  background-color: #e60000;
+}
+
+/* Pagination */
+.pagination {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.page-link {
+  margin: 0 10px;
+  text-decoration: none;
+  padding: 10px;
+  background-color: #a89c9c;
+  color: white;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+.page-link:hover {
+  background-color: #8c7e7e;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #0077cc;
+  text-decoration: none;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background-color: #f0f0f0;
+}
+.detailsBox {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border: 1px solid #ddd;
+}
+
+.detailsBox p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.action-links {
+  margin-top: 1.5rem;
+}
+
+.action-links a {
+  margin-right: 1rem;
+}
+
+/* Filter Form Container */
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 30px;
+  align-items: flex-end;
+  background-color: #dcd3d3;
+  padding: 20px;
+  border-left: 4px solid #a08b8b;
+  border-radius: 10px;
+}
+
+/* Each Filter Group */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Label styling */
+.filter-group label {
+  margin-bottom: 6px;
+  font-size: 1rem;
+  color: #222;
+}
+
+/* Date Inputs */
+.filter-group input[type="date"] {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  background-color: white;
+  color: #333;
+  width: 180px;
+  max-width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.filter-group input[type="date"]:focus {
+  border-color: #7d6e6e;
+  outline: none;
+}
+
+/* Submit Button (reuses .search-button styles) */
+.search-button,
+.clear-button {
+  padding: 10px 16px;
+  background-color: #7d6e6e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover,
+.clear-button:hover {
+  background-color: #6b5b5b;
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.highlight {
+  background-color: #d0ebff;
+}
+
   </style>
 </head>
