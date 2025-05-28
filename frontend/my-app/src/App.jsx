@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AuthPage from "./scenes/AuthPage";
-import AdminDashboard from "./scenes/AdminDash";
+
 import UserDashboard from "./scenes/UserDash";
 import ProtectedRoute from "./states/authRoute";
 import { AuthProvider } from "./states/auth";

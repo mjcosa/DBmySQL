@@ -61,32 +61,36 @@ const AppointmentsPage = () => {
             <h3>Total Appointments: {filteredappointments.length}</h3>
           </div>
 
-          <table className={styles.patientsTable}>
-            <thead>
-              <tr>
-                <th>Appointment No.</th>
-                <th>appointment Name</th>
-                <th>Concern</th>
-                <th>Appointment Type</th>
-                <th>Appointment Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredappointments.map((appointment) => (
-                <tr
-                  key={appointment.no}
-                  className={styles.clickableRow}
-                  onClick={() => navigate(`/admin/appointment/${appointment.id}`)}
-                >
-                  <td>{highlight(appointment.id, query)}</td>
-                  <td>{highlight(appointment.last_name, query)}</td>
-                  <td>{highlight(`${appointment.first_name} ${appointment.middle_name}`, query)}</td>
-                  <td>{highlight(appointment.contact_no, query)}</td>
-                  <td>{appointment.next_appointment || 'None'}</td>
+          {filteredappointments.length === 0 ? (
+            <p className={styles.noResults}>No appointments found.</p>
+          ) : (
+            <table className={styles.patientsTable}>
+              <thead>
+                <tr>
+                  <th>Appointment No.</th>
+                  <th>appointment Name</th>
+                  <th>Concern</th>
+                  <th>Appointment Type</th>
+                  <th>Appointment Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredappointments.map((appointment) => (
+                  <tr
+                    key={appointment.no}
+                    className={styles.clickableRow}
+                    onClick={() => navigate(`/admin/appointment/${appointment.id}`)}
+                  >
+                    <td>{highlight(appointment.id, query)}</td>
+                    <td>{highlight(appointment.last_name, query)}</td>
+                    <td>{highlight(`${appointment.first_name} ${appointment.middle_name}`, query)}</td>
+                    <td>{highlight(appointment.contact_no, query)}</td>
+                    <td>{appointment.next_appointment || 'None'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>
@@ -96,7 +100,7 @@ const AppointmentsPage = () => {
 // Highlight matching query
 const highlight = (text, query) => {
   if (!query) return text;
-  const parts = text.split(new RegExp(`(${query})`, 'gi'));
+  const parts = String(text).split(new RegExp(`(${query})`, 'gi'));
   return parts.map((part, i) =>
     part.toLowerCase() === query ? <span key={i} className={styles.highlight}>{part}</span> : part
   );

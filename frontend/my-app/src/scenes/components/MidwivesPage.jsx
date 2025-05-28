@@ -61,32 +61,36 @@ const MidwivesPage = () => {
             <h3>Total Midwives: {filteredMidwives.length}</h3>
           </div>
 
-          <table className={styles.patientsTable}>
-            <thead>
-              <tr>
-                <th>Midwife ID</th>                
-                <th>Last Name</th>
-                <th>First & Middle Name</th>
-                <th>Contact No</th>
-                <th>Availability</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredMidwives.map((midwives) => (
-                <tr
-                  key={midwives.id}
-                  className={styles.clickableRow}
-                  onClick={() => navigate(`/admin/midwives/${midwives.id}`)}
-                >
-                  <td>{highlight(midwives.id, query)}</td>
-                  <td>{highlight(midwives.last_name, query)}</td>
-                  <td>{highlight(`${midwives.first_name} ${midwives.middle_name}`, query)}</td>
-                  <td>{highlight(midwives.contact_no, query)}</td>
-                  <td>{midwives.next_appointment || 'None'}</td>
+          {filteredMidwives.length === 0 ? (
+            <p className={styles.noResults}>No midwives found.</p>
+          ) : (
+            <table className={styles.patientsTable}>
+              <thead>
+                <tr>
+                  <th>Midwife ID</th>                
+                  <th>Last Name</th>
+                  <th>First & Middle Name</th>
+                  <th>Contact No</th>
+                  <th>Availability</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredMidwives.map((midwives) => (
+                  <tr
+                    key={midwives.id}
+                    className={styles.clickableRow}
+                    onClick={() => navigate(`/admin/midwives/${midwives.id}`)}
+                  >
+                    <td>{highlight(midwives.id, query)}</td>
+                    <td>{highlight(midwives.last_name, query)}</td>
+                    <td>{highlight(`${midwives.first_name} ${midwives.middle_name}`, query)}</td>
+                    <td>{highlight(midwives.contact_no, query)}</td>
+                    <td>{midwives.next_appointment || 'None'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>
@@ -96,7 +100,7 @@ const MidwivesPage = () => {
 // Highlight matching query
 const highlight = (text, query) => {
   if (!query) return text;
-  const parts = text.split(new RegExp(`(${query})`, 'gi'));
+  const parts = String(text).split(new RegExp(`(${query})`, 'gi'));
   return parts.map((part, i) =>
     part.toLowerCase() === query ? <span key={i} className={styles.highlight}>{part}</span> : part
   );
