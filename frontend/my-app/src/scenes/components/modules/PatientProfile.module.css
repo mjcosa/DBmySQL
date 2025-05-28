@@ -1,0 +1,63 @@
+.pageWrapper {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.profileCard {
+  background: #fff;
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+}
+
+button.delete {
+  background-color: #dc3545;
+}
+
+.history {
+  margin-top: 2rem;
+}
+
+.history ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+}
+
+h2, p {
+      color: #555;
+}
