@@ -7,7 +7,7 @@ export default function HomePage() {
     <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
         <div className={styles.page}>
         <div className={styles.container}>
-            <h1 className={styles.title}>Welcome to Serenity Birthing Clinic</h1>
+            <h1 className={styles.title}>Welcome to Sabio-Reantazo Birthing Home and Family Planning Clinic</h1>
             <p className={styles.subtitle}>Choose a section to get started:</p>
 
             <div className={styles.cardGrid}>

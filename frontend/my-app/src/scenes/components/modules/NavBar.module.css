@@ -38,13 +38,13 @@
 
 .nav a:hover,
 .nav a.active {
-  background: rgba(255, 255, 255, 0.3);
-  color: #857f7f; 
+  background: rgba(224, 122, 158, 0.1);
+  color: #e07a9e;
 }
 
 .fadeIn {
   opacity: 0;
-  animation: fadeIn 0.25s ease-in forwards;
+  animation: fadeIn 0.35s ease-in forwards;
 }
 
 @keyframes fadeIn {
