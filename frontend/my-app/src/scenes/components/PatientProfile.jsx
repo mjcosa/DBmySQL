@@ -41,7 +41,7 @@ const PatientProfile = () => {
   if (!patient) return <p>Loading patient data...</p>;
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
         <div className={styles.pageContainer}>
             <div className={styles.wrapper}>
             <NavBar />

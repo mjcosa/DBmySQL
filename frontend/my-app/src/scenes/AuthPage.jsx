@@ -22,7 +22,7 @@ const AuthPage = () => {
   };
 
  return (
-    <div className={styles.pageWrapper}>
+    <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
       <div className={styles.card}>
         <h2 className={styles.title}>Login</h2>
         <form onSubmit={handleLogin} className={styles.form}>

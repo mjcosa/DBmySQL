@@ -41,7 +41,7 @@ const MidwivesProfile = () => {
   if (!midwives) return <p>Loading midwife data...</p>;
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
         <div className={styles.pageContainer}>
             <div className={styles.wrapper}>
             <NavBar />

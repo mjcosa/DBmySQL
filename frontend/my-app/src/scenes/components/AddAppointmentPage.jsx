@@ -9,6 +9,8 @@ const AddPatientForm = () => {
     lastName: "",
     contactNo: "",
     occupation: "",
+    concern: "",
+    appointmentDate: "",
   });
 
   const handleChange = (e) => {
@@ -27,6 +29,8 @@ const AddPatientForm = () => {
       lastName: "",
       contactNo: "",
       occupation: "",
+      concern: "",
+      appointmentDate: "",
     });
   };
 
@@ -79,6 +83,24 @@ const AddPatientForm = () => {
                 type="text"
                 name="occupation"
                 value={formData.occupation}
+                onChange={handleChange}
+                required
+                />
+
+                <label>Concern</label>
+                <input
+                type="text"
+                name="concern"
+                value={formData.concern}
+                onChange={handleChange}
+                required
+                />
+
+                <label>Appointment Date</label>
+                <input
+                type="text"
+                name="occupation"
+                value={formData.appointmentDate}
                 onChange={handleChange}
                 required
                 />
