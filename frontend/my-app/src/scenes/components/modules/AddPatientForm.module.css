@@ -74,3 +74,14 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeIn 0.25s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

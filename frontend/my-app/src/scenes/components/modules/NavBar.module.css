@@ -41,3 +41,14 @@
   background: rgba(255, 255, 255, 0.3);
   color: #857f7f; 
 }
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeIn 0.25s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

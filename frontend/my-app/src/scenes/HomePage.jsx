@@ -4,7 +4,7 @@ import styles from './modules/HomePage.module.css';
 
 export default function HomePage() {
   return (
-    <div className={styles.pageWrapper}>
+    <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
         <div className={styles.page}>
         <div className={styles.container}>
             <h1 className={styles.title}>Welcome to Serenity Birthing Clinic</h1>

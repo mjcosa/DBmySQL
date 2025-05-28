@@ -41,7 +41,7 @@ const AppointmentProfile = () => {
   if (!appointment) return <p>Loading Appointment data...</p>;
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
         <div className={styles.pageContainer}>
             <div className={styles.wrapper}>
             <NavBar />

@@ -31,7 +31,7 @@ const AddPatientForm = () => {
   };
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
         <div className={styles.pageContainer}>
         <NavBar />
         <div className={styles.content}></div>
