@@ -12,13 +12,8 @@ export default function UserNavBar() {
           </div>
           <ul>
             <li>
-              <NavLink to="/user/appointment" className={({ isActive }) => isActive ? styles.active : undefined}>
+              <NavLink to="/user/appointments" className={({ isActive }) => isActive ? styles.active : undefined}>
                 Schedule Appointment
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/user/view/profile" className={({ isActive }) => isActive ? styles.active : undefined}>
-                View Appointments
               </NavLink>
             </li>
           </ul>
