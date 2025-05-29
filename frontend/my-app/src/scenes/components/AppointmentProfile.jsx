@@ -9,7 +9,6 @@ const AppointmentProfile = () => {
   const [appointment, setAppointment] = useState(null);
 
   useEffect(() => {
-    // Replace with real API call
     const fetchAppointment = async () => {
       try {
         const response = await fetch(`http://localhost:3000/schedule/view/${id}`);
@@ -24,14 +23,14 @@ const AppointmentProfile = () => {
   }, [id]);
 
   const handleEdit = () => {
-    navigate(`/appointments/edit/${id}`);
+    navigate(`/admin/appointment/edit/${id}`);
   };
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this appointment?")) {
       try {
-        await fetch(`/api/appointments/${id}`, { method: "DELETE" });
-        navigate("/appointments");
+        await fetch(`http://localhost:3000/schedule/delete/${id}`, { method: "DELETE" });
+        navigate("/admin/appointments");
       } catch (error) {
         console.error("Failed to delete appointment", error);
       }
@@ -43,15 +42,16 @@ const AppointmentProfile = () => {
   return (
     <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
         <div className={styles.pageContainer}>
+        <NavBar />
             <div className={styles.wrapper}>
-            <NavBar />
             <div className={styles.profileCard}>
                 <h2>{appointment.first_name} {appointment.middle_name} {appointment.last_name}</h2>
                 <p><strong>Appointment No: </strong>{appointment.appointment_no}</p>
-                <p><strong>Patient Name:</strong> {appointment.contact_no}</p>
-                <p><strong>Assigned Midwife Name:</strong> {appointment.contact_no}</p>
-                <p><strong>Appointment Date:</strong> {appointment.appointment_date}</p>
                 <p><strong>Concern:</strong> {appointment.concern ?? "N/A"}</p>
+                <p><strong>Patient Name:</strong> {appointment.patient_last_name} {appointment.patient_first_name}</p>
+                <p><strong>Assigned Midwife Name:</strong> {appointment.midwife_last_name} {appointment.midwife_first_name}</p>
+                <p><strong>Procedure Type: </strong> {appointment.procedure_type ?? "N/A"}</p>
+                <p><strong>Appointment Date:</strong> {appointment.appointment_date}</p>
                 <p><strong>Amount Due:</strong> {appointment.amount_due ?? "N/A"}</p>
 
                 <div className={styles.actions}>

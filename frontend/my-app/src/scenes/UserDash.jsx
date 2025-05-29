@@ -11,14 +11,9 @@ const UserDashboard = () => {
                 <p className={styles.subtitle}>Choose a section to get started:</p>
     
                 <div className={styles.cardGrid}>
-                <Link to="/admin/patients" className={styles.card}>
+                <Link to="/user/appointments" className={styles.card}>
                     <h2>📅 Schedule Appointment</h2>
                     <p>Schedule an appointment with a midwife</p>
-                </Link>
-    
-                <Link to="/admin/appointments" className={styles.card}>
-                    <h2>📅 View Appointments</h2>
-                    <p>View and edit scheduled appointments</p>
                 </Link>
                 </div>
             </div>

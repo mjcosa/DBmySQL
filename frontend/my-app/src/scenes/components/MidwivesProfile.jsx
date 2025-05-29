@@ -6,17 +6,16 @@ import NavBar from "./Navigation";
 const MidwivesProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [midwives, setMidwives] = useState(null);
+  const [midwife, setMidwife] = useState(null);
 
   useEffect(() => {
-    // Replace with real API call
     const fetchMidwife = async () => {
       try {
         const response = await fetch(`http://localhost:3000/midwife/${id}`);
         const data = await response.json();
-        setMidwives(data);
+        setMidwife(data);
       } catch (error) {
-        console.error("Failed to fetch patient", error);
+        console.error("Failed to fetch midwife", error);
       }
     };
 
@@ -24,53 +23,57 @@ const MidwivesProfile = () => {
   }, [id]);
 
   const handleEdit = () => {
-    navigate(`/patients/edit/${id}`);
+    navigate(`/midwives/edit/${id}`);
   };
 
   const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this patient?")) {
+    if (window.confirm("Are you sure you want to delete this midwife?")) {
       try {
-        await fetch(`/api/patients/${id}`, { method: "DELETE" });
-        navigate("/patients");
+        await fetch(`/midwife/delete/${id}`, { method: "DELETE" });
+        navigate("/admin/midwives");
       } catch (error) {
-        console.error("Failed to delete patient", error);
+        console.error("Failed to delete midwife", error);
       }
     }
   };
 
-  if (!midwives) return <p>Loading midwife data...</p>;
+  if (!midwife) return <p>Loading midwife data...</p>;
 
   return (
     <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
-        <div className={styles.pageContainer}>
-            <div className={styles.wrapper}>
-            <NavBar />
-            <div className={styles.profileCard}>
-                <h2>{midwives.first_name} {midwives.middle_name} {midwives.last_name}</h2>
-                <p><strong>Patient ID: </strong>{midwives.id}</p>
-                <p><strong>Contact No:</strong> {midwives.contact_no}</p>
-                <p><strong>Occupation:</strong> {midwives.occupation ?? "N/A"}</p>
+      <div className={styles.pageContainer}>
+        <div className={styles.wrapper}>
+          <NavBar />
+          <div className={styles.profileCard}>
+            <h2>
+              {midwife.first_name} {midwife.middle_name} {midwife.last_name}
+            </h2>
+            <p><strong>Midwife ID: </strong>{midwife.id}</p>
+            <p><strong>Contact No:</strong> {midwife.contact_no}</p>
+          </div>
 
-                <div className={styles.actions}>
-                <button onClick={handleEdit}>Edit</button>
-                <button onClick={handleDelete} className={styles.delete}>Delete</button>
-                </div>
-
-                <div className={styles.history}>
-                <h3>Medical History</h3>
-                {midwives.medicalHistory?.length ? (
-                    <ul>
-                    {midwives.medicalHistory.map((entry, index) => (
-                        <li key={index}>{entry}</li>
-                    ))}
-                    </ul>
-                ) : (
-                    <p>No medical history available.</p>
-                )}
-                </div>
-            </div>    
+          <div className={styles.history}>
+            <h3>Assigned Patients</h3>
+            {midwife.assigned_patients && midwife.assigned_patients.length > 0 ? (
+              <ul>
+                {midwife.assigned_patients.map((patient, index) => (
+                  <li key={index}>
+                    <strong>{patient.first_name} {patient.middle_name} {patient.last_name}</strong> – {patient.concern} on {new Date(patient.appointment_date).toLocaleDateString()}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No assigned patients.</p>
+            )}
+          </div>
+          
+            <div className={styles.actions}>
+              <button onClick={handleEdit}>Edit</button>
+              <button onClick={handleDelete} className={styles.delete}>Delete</button>
             </div>
+            
         </div>
+      </div>
     </div>
   );
 };

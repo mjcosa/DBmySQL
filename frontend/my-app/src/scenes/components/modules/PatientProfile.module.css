@@ -37,6 +37,7 @@
   transform: scale(1.01);
 }
 
+
 .actions {
   margin-top: 1rem;
   display: flex;
@@ -68,6 +69,7 @@ button.delete:hover {
 }
 
 .history {
+  color: #444;
   margin-top: 2rem;
   width: 100%;
 }
@@ -91,4 +93,40 @@ h2, p {
   to {
     opacity: 1;
   }
+}
+
+.accordion {
+  width: 100%;
+  margin-top: 1.5rem;
+  color: #555;
+}
+
+.accordion details {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #fafafa;
+}
+
+.accordion summary {
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  outline: none;
+}
+
+.accordion summary:hover {
+  color: #007BFF;
+}
+
+.accordion ul {
+  margin: 0.5rem 0 0 1rem;
+  padding: 0;
+  list-style-type: disc;
+}
+
+.accordion p {
+  margin-left: 1rem;
 }

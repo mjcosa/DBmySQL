@@ -1,7 +1,7 @@
 import styles from './modules/NavBar.module.css';
 import { NavLink } from "react-router-dom";
 
-export default function NavBar() {
+export default function UserNavBar() {
   return (
         <nav className={styles.nav}>
           <div className={styles.siteTitle}>
@@ -12,12 +12,12 @@ export default function NavBar() {
           </div>
           <ul>
             <li>
-              <NavLink to="/admin/patients" className={({ isActive }) => isActive ? styles.active : undefined}>
+              <NavLink to="/user/appointment" className={({ isActive }) => isActive ? styles.active : undefined}>
                 Schedule Appointment
               </NavLink>
             </li>
             <li>
-              <NavLink to="/admin/addPatient" className={({ isActive }) => isActive ? styles.active : undefined}>
+              <NavLink to="/user/view/profile" className={({ isActive }) => isActive ? styles.active : undefined}>
                 View Appointments
               </NavLink>
             </li>

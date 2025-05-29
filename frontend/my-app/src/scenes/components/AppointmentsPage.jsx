@@ -3,38 +3,29 @@ import styles from './modules/PatientsPage.module.css';
 import { useNavigate } from 'react-router-dom';
 import NavBar from './Navigation';
 
-const mockAppointments = [
-  {
-    id: 1,
-    first_name: 'Maria',
-    middle_name: 'Elena',
-    last_name: 'Cruz',
-    contact_no: '09123456789',
-    next_appointment: '2024-06-10'
-  },
-  {
-    id: 2,
-    first_name: 'Anna',
-    middle_name: 'Louise',
-    last_name: 'Santos',
-    contact_no: '09987654321',
-    next_appointment: null
-  }
-];
-
 const AppointmentsPage = () => {
   const [query, setQuery] = useState('');
   const [appointments, setappointments] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setappointments(mockAppointments); // Replace with real API fetch
+    const fetchAppointments = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/schedule/view`);
+        const data = await response.json();
+        setappointments(data);
+      } catch (error) {
+        console.error("Failed to fetch Appointment", error);
+      }
+    };
+
+    fetchAppointments();
   }, []);
 
   const handleSearch = (e) => setQuery(e.target.value.toLowerCase());
 
   const filteredappointments = appointments.filter((p) =>
-    [p.first_name, p.middle_name, p.last_name, p.contact_no]
+    [p.appointment_no, p.concern, p.appointment_date, p.patient_id]
       .join(' ')
       .toLowerCase()
       .includes(query)
@@ -68,9 +59,7 @@ const AppointmentsPage = () => {
               <thead>
                 <tr>
                   <th>Appointment No.</th>
-                  <th>appointment Name</th>
                   <th>Concern</th>
-                  <th>Appointment Type</th>
                   <th>Appointment Date</th>
                 </tr>
               </thead>
@@ -79,13 +68,11 @@ const AppointmentsPage = () => {
                   <tr
                     key={appointment.no}
                     className={styles.clickableRow}
-                    onClick={() => navigate(`/admin/appointment/${appointment.id}`)}
+                    onClick={() => navigate(`/admin/appointment/${appointment.appointment_no}`)}
                   >
-                    <td>{highlight(appointment.id, query)}</td>
-                    <td>{highlight(appointment.last_name, query)}</td>
-                    <td>{highlight(`${appointment.first_name} ${appointment.middle_name}`, query)}</td>
-                    <td>{highlight(appointment.contact_no, query)}</td>
-                    <td>{appointment.next_appointment || 'None'}</td>
+                    <td>{highlight(appointment.appointment_no, query)}</td>
+                    <td>{highlight(appointment.concern, query)}</td>
+                    <td>{highlight(appointment.appointment_date, query)}</td>
                   </tr>
                 ))}
               </tbody>

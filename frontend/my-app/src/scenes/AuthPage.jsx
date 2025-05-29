@@ -14,9 +14,9 @@ const AuthPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const result = login(username, password);
+    const result = await login(username, password); // <-- await the login function
 
     if (result.success) {
       navigate(result.role === "admin" ? "/admin" : "/user");
@@ -24,6 +24,7 @@ const AuthPage = () => {
       setError("Invalid credentials");
     }
   };
+
 
   return (
 

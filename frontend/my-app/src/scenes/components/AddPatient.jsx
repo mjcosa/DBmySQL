@@ -8,7 +8,6 @@ const AddPatientForm = () => {
     middleName: "",
     lastName: "",
     contactNo: "",
-    occupation: "",
   });
 
   const handleChange = (e) => {
@@ -16,26 +15,44 @@ const AddPatientForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Replace with API call or state update
-    console.log("Patient Submitted:", formData);
-    alert("Patient added successfully!");
-    setFormData({
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      contactNo: "",
-      occupation: "",
-    });
+
+    try {
+      const response = await fetch("http://localhost:3000/patient/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Specify JSON payload
+        },
+        body: JSON.stringify(formData), // Convert object to JSON string
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add patient");
+      }
+
+      const savedPatient = await response.json();
+      console.log("Patient Submitted:", savedPatient);
+      alert("Patient added successfully!");
+
+      setFormData({
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        contactNo: "",
+      });
+
+    } catch (error) {
+      console.error("Error submitting patient:", error);
+      alert("Failed to add patient. Please try again.");
+    }
   };
+
 
   return (
     <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
         <div className={styles.pageContainer}>
-        <NavBar />
-        <div className={styles.content}></div>
-            <div className={styles.container}>
+          <NavBar />
             <h2>Add New Patient</h2>
             <form onSubmit={handleSubmit} className={styles.form}>
                 <label>First Name</label>
@@ -73,18 +90,9 @@ const AddPatientForm = () => {
                 onChange={handleChange}
                 required
                 />
-
-                <label>Occupation</label>
-                <input
-                type="text"
-                name="occupation"
-                value={formData.occupation}
-                onChange={handleChange}
-                required
-                />
+                
                 <button type="submit">Add Patient</button>
             </form>
-            </div>
         </div>
     </div>
   );

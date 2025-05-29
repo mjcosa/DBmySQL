@@ -3,32 +3,23 @@ import styles from './modules/PatientsPage.module.css';
 import { useNavigate } from 'react-router-dom';
 import NavBar from './Navigation';
 
-const mockMidwives = [
-  {
-    id: 1,
-    first_name: 'Maria',
-    middle_name: 'Elena',
-    last_name: 'Cruz',
-    contact_no: '09123456789',
-    next_appointment: '2024-06-10'
-  },
-  {
-    id: 2,
-    first_name: 'Anna',
-    middle_name: 'Louise',
-    last_name: 'Santos',
-    contact_no: '09987654321',
-    next_appointment: null
-  }
-];
-
 const MidwivesPage = () => {
   const [query, setQuery] = useState('');
   const [midwives, setMidwives] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setMidwives(mockMidwives); // Replace with real API fetch
+    const fetchMidwives = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/midwife`);
+        const data = await response.json();
+        setMidwives(data);
+      } catch (error) {
+        console.error("Failed to fetch Appointment", error);
+      }
+    };
+
+    fetchMidwives();
   }, []);
 
   const handleSearch = (e) => setQuery(e.target.value.toLowerCase());

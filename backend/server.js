@@ -5,6 +5,7 @@ import {router} from "./routes/patientroutes.js";
 import { appointmentRouter } from "./routes/appointmentroutes.js";
 import { midwifeRouter } from "./routes/midwiferoutes.js";
 import methodOverride from "method-override";
+import { authRouter } from "./routes/authroutes.js";
 
 
 const PORT = process.env.PORT || 3000;
@@ -25,31 +26,10 @@ app.use(methodOverride('_method'));
 app.set("view engine", "ejs");
 // app.set("views", "./views")
 
-//Index / All Patients Page
-app.get('/', (req, res) => {
-    res.redirect('/patient');
-});
-
-  //Add patient page
-app.get('/add_patient', (req, res) => {
-    res.render('add', {title: 'Add Patient'})
-});
-
-// Add schedule page
-app.get('/schedule', (req, res) => {
-  res.render('schedule', {title: 'Schedule Appointment'})
-});
-
-  //Blog Routes
 app.use('/patient', router);
 
 app.use("/schedule", appointmentRouter);
 
 app.use("/midwife", midwifeRouter);
 
-
-  
-  // 404 page
-app.use((req, res) => {
-    res.status(404).render('404', {title: '404'})
-});
+app.use("/login", authRouter);

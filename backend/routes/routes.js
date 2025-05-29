@@ -19,38 +19,30 @@ export async function getPatient(req, res) {
   try {
     const patients = await getPatients();
 
-    // Calculate total pages if you have pagination logic (or hardcode to 1 for now)
-    const totalPages = 1;  // Replace with actual calculation if needed
-
-    const view = req.query.view === 'table' ? 'table' : 'cards';
-
-    return res.render('../views/index', {
-      title: 'All Patients',
-      patient: patients,
-      view,
-      totalPages
-    });
+    res.status(200).json(patients);
   } catch (err) {
     console.error(err);
-    return res.status(500);
+    res.status(500).json({ error: "Failed to get patient" });
+  } 
+}
+
+export async function addPatient(req, res) {
+  try {
+    const { firstName, middleName, lastName, contactNo } = req.body;
+    const safeFirstName = firstName ?? null;
+    const safeMiddleName = middleName ?? null;
+    const safeLastName = lastName ?? null;
+    const safeContactNo = contactNo ?? null;
+
+    await postPatient(safeFirstName, safeMiddleName, safeLastName, safeContactNo);
+
+    res.status(200).json({ message: "Patient added successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to add patient" });
   }
 }
 
-export async function addPatient(req, res){
-    try {
-        await postPatient(
-            req.body.firstName,
-            req.body.middleName,
-            req.body.lastName,
-            req.body.contact
-        );
-        
-        return res.status(200).redirect(`/`);
-    } catch (err) {
-        console.error(err);
-        return res.status(500);
-    }
-}
 
 export async function getPatientDetails(req, res){
     try {
@@ -60,7 +52,7 @@ export async function getPatientDetails(req, res){
         }
     } catch (err) {
         console.error(err);
-        return res.status(500);
+        res.status(500);
     }
 }
 
@@ -85,14 +77,14 @@ export async function updatePatientDetails(req, res){
         let patient = await getPatientbyID(req.params.id);
         patient = {
             id: req.params.id,
-            first_name: req.body.first_name,
-            middle_name: req.body.middle_name,
-            last_name: req.body.last_name,
-            contact_no: req.body.contact_no,
+            first_name: req.body.firstName,
+            middle_name: req.body.middleName,
+            last_name: req.body.lastName,
+            contact_no: req.body.contactNo,
         }
         const updatedPatient = await updatePatient(patient);
         console.log(updatedPatient);
-        return res.redirect(`/patient/${req.params.id}`);
+        res.json({redirect: `http://localhost:5173/patient/${req.params.id}`});
     } catch (err) {
         console.error(err);
         return res.status(500);
@@ -103,9 +95,7 @@ export async function getMidWife(req, res){
     try {
         const midwife = await getMidwives();
 
-        const totalPages = 1;  // Replace with actual calculation if needed
-
-        return res.render('../views/midwife', {title: 'All Midwives', midwife, totalPages})
+        res.status(200).json(midwife);
 
     } catch (err) {
         console.error(err);
@@ -122,7 +112,7 @@ export async function addMidwife(req, res){
             req.body.contact
         );
         
-        return res.status(200).redirect(`/`);
+        res.status(200).redirect(`/`);
     } catch (err) {
         console.error(err);
         return res.status(500);

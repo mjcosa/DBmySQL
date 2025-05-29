@@ -12,6 +12,9 @@ import AppointmentsPage from "./scenes/components/AppointmentsPage";
 import PatientProfile from "./scenes/components/PatientProfile";
 import AppointmentProfile from "./scenes/components/AppointmentProfile";
 import MidwivesProfile from "./scenes/components/MidwivesProfile";
+import AddAppointmentForm from "./scenes/components/AddAppointmentPage";
+import EditAppointmentForm from "./scenes/components/EditAppointment";
+import UpdatePatientForm from "./scenes/components/editPatient";
 
 
 const App = () => {
@@ -48,6 +51,15 @@ const App = () => {
           />
 
           <Route
+            path="/admin/edit/patient/:id"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <UpdatePatientForm />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
             path="/admin/addPatient"
             element={
               <ProtectedRoute requiredRole="admin">
@@ -70,6 +82,15 @@ const App = () => {
             element={
               <ProtectedRoute requiredRole="admin">
                 <AppointmentProfile />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/appointment/edit/:id"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <EditAppointmentForm />
               </ProtectedRoute>
             }
           />
@@ -100,6 +121,25 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/user/appointments"
+            element={
+              <ProtectedRoute requiredRole="user">
+                <AddAppointmentForm />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/user/view/profile/:id"
+            element={
+              <ProtectedRoute requiredRole="user">
+                <PatientProfile />
+              </ProtectedRoute>
+            }
+          />
+          
           <Route path="*" element={<AuthPage />} />
         </Routes>
       </Router>

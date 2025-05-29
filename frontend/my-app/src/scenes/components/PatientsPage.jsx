@@ -3,32 +3,23 @@ import styles from './modules/PatientsPage.module.css';
 import { useNavigate } from 'react-router-dom';
 import NavBar from './Navigation';
 
-const mockPatients = [
-  {
-    id: 1,
-    first_name: 'Maria',
-    middle_name: 'Elena',
-    last_name: 'Cruz',
-    contact_no: '09123456789',
-    next_appointment: '2024-06-10'
-  },
-  {
-    id: 2,
-    first_name: 'Anna',
-    middle_name: 'Louise',
-    last_name: 'Santos',
-    contact_no: '09987654321',
-    next_appointment: null
-  }
-];
-
 const PatientsPage = () => {
   const [query, setQuery] = useState('');
   const [patients, setPatients] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setPatients(mockPatients); // Replace with real API fetch
+    const fetchPatients = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/patient`);
+        const data = await response.json();
+        setPatients(data);
+      } catch (error) {
+        console.error("Failed to fetch Appointment", error);
+      }
+    };
+
+    fetchPatients();
   }, []);
 
   const handleSearch = (e) => setQuery(e.target.value.toLowerCase());

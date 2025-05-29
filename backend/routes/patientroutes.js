@@ -16,4 +16,4 @@ router.get('/:id', getPatientDetails);
 
 router.delete('/delete/:id', deletePatientDetails);
 
-router.post('/edit/:id', updatePatientDetails);
+router.put('/edit/:id', updatePatientDetails);
